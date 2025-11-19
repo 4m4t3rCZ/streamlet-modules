@@ -5,7 +5,7 @@
   "name": "Přehraj.to",
   "website": "https://prehraj.to/",
   "repository": "https://streamlet.info/repo_v3/stream/prehraj-to.json",
-  "author": "AnyoneCanCode",
+  "author": "PaťaseK",
   "version": "1.0.0",
   "description": "Přehraj.to stream provider for movies and series - Czech streaming service.",
   "baseUrl": "https://prehraj.to",
