@@ -4,16 +4,60 @@
   "type": ["stream"],
   "name": "Přehraj.to",
   "website": "https://prehraj.to/",
-  "repository": "https://streamlet.info/repo_v3/stream/prehraj-to.json",
+  "repository": "https://raw.githubusercontent.com/username/streamlet-modules/main/stream/prehraj-to.json",
   "author": "PaťaseK",
-  "version": "1.0.0",
-  "description": "Přehraj.to stream provider for movies and series - Czech streaming service.",
+  "version": "2.0.0",
+  "description": "Přehraj.to stream provider with authentication - Czech streaming service for movies and series.",
   "baseUrl": "https://prehraj.to",
   "responseFormat": "scraper",
+  "config": {
+    "email": {
+      "type": "string",
+      "label": "{usernameEmail}",
+      "default": "",
+      "required": true
+    },
+    "password": {
+      "type": "password",
+      "label": "{password}",
+      "default": "",
+      "required": true
+    }
+  },
   "headers": {
-    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-    "accept-language": "cs,en;q=0.5",
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    "accept": "application/json",
+    "accept-language": "cs,en;q=0.9",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+    "origin": "https://prehraj.to",
+    "referer": "https://prehraj.to/",
+    "x-requested-with": "XMLHttpRequest"
+  },
+  "auth": {
+    "steps": [
+      {
+        "name": "login",
+        "method": "POST",
+        "url": "/?frm=loginDialog-login-loginForm",
+        "headers": {
+          "content-type": "multipart/form-data"
+        },
+        "body": {
+          "email": "{email}",
+          "password": "{password}",
+          "_do": "loginDialog-login-loginForm-submit",
+          "login": "Přihlásit se"
+        },
+        "response": {
+          "status": {
+            "path": "redirect",
+            "states": {
+              "success": "https://prehraj.to/?afterLogin=1",
+              "error": "authentication_error"
+            }
+          }
+        }
+      }
+    ]
   },
   "scraper": [
     {
@@ -30,9 +74,9 @@
       }
     },
     {
-      "name": "Získání stream linku",
+      "name": "Přesměrování na video stránku",
       "type": "link",
-      "url": "{link}?do=download",
+      "url": "{link}",
       "mapping": {
         "link": "url"
       }
